@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title id="siteTitle">Rolling Sky Levels List</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+		:root {
+			color-scheme: dark;
+		}
+		body {
+			margin: 0 25pt 0 15pt;
+		}
+		#contents {
+			max-width: 400pt;
+		}
+		#contents, details div, details pre {
+			margin-left: 10pt;
+		}
+		details pre {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+		details img {
+			display: block;
+			width: 100px;
+			height: 158px;
+			border-radius: 10pt;
+			/* margin-left: 10pt; */
+		}
+		details {
+			border: solid;
+			/* width: max-content; */
+			padding: 10pt;
+			border-radius: 10pt;
+			/* user-select: none; */
+			border-color: #606060;
+			background: #ffffff0f;
+			overflow: hidden;
+		}
+		details:not(:last-child) {
+			margin-bottom: 10pt;
+		}
+		details[open]>summary {
+			margin-bottom: 10pt;
+		}
+		</style>
+		<script src="../../global.js"></script>
+		<link rel="stylesheet" href="../../global.css">
+	</head>
+	<body>
+		<h1>Level Lists</h1>
+		<p>
+			<select onchange="changeLang(this.value)">
+				<option value="english">english</option>
+				<option value="spanish">spanish</option>
+				<option selected value="chineseSimplified">chineseSimplified</option>
+				<option value="chineseTraditional">chineseTraditional</option>
+				<option value="japanese">japanese</option>
+				<option value="french">french</option>
+				<option value="german">german</option>
+				<option value="italian">italian</option>
+				<option value="dutch">dutch</option>
+				<option value="russian">russian</option>
+				<option value="arabic">arabic</option>
+				<option value="korean">korean</option>
+			</select>
+		</p>
+		<p id="contents"></p>
+		<script src="index.js"></script>
+	</body>
+</html>
