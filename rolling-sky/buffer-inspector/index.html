@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!-- OwO -->
+<html>
+   <head>
+      <title>Buffer Inspector</title>
+      <script src="../../favicon.js"></script>
+      <link rel="stylesheet" href="../global.css">
+      <script src="../global.js"></script>
+   </head>
+   <body>
+      <div class="container" style="margin: 10pt 20pt;">
+         <h2>What is a GeoBuffer?</h2>
+         <p>
+            A GeoBuffer controls what and how many objects will be loaded in a single render section. Sections can be seperated by GeoBuffer Render Tiles.
+         </p>
+         <h2>GeoBuffer Inspector</h2>
+         <p>
+            Input a GeoBuffer line, ex. '17,4,41' or '20,4,18'<br>
+			(If it doesn't automatically update, press Enter or click off)
+         </p>
+         <input id="bufferInput" onchange="Process();" value="0,0,100"></input>
+         <p id="bufferOutput">
+            GeoBuffer Name: <a target="_blank" href="https://sqdldev.github.io/rolling-sky/geobuffer-ids/#0">TileX</a><br>
+            GeoBuffer Type: Ground<br>
+            GeoBuffer Limit: 100
+         </p>
+      </div>
+      <script src="index.js"></script>
+   </body>
+</html>
