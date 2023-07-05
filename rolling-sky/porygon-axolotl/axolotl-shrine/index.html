@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Axolotl Shrine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="pagename" content="AXOLOTL SHRINE">
+    <meta name="description" content="Axolotl. Just Axolotl.">
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+
+        #aligner {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            user-select: none !important;
+        }
+
+        @keyframes expand {
+            0% {
+                transform: translate(-50%, 0) scale(0);
+                --webkit-transform: translate(-50%, 0) scale(0);
+                opacity: 0;
+            }
+
+            25% {
+                background: #cc5887;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translate(-50%, 0) scale(1);
+                --webkit-transform: translate(-50%, 0) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .expander {
+            position: fixed;
+            left: 50%;
+            animation: expand 0.75s cubic-bezier(0, 0.69, 0.45, 1);
+            --webkit-animation: expand 0.75s cubic-bezier(0, 0.69, 0.45, 1);
+            width: 700px;
+            height: 700px;
+            max-width: 90vw;
+            max-height: 90vw;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+			opacity: 0;
+			transform: translate(-50%, 0) scale(0);
+			--webkit-transform: translate(-50%, 0) scale(0);
+			cursor: pointer;
+        }
+
+        body {
+            margin: 0;
+            background: auto;
+        }
+
+        #axolotlclicker {
+            position: relative;
+            max-width: 100%;
+            width: 700px;
+            transition: 0.055s;
+            --webkit-transition: 0.055s;
+            z-index: 50;
+        }
+
+		#axolotlclicker.down {
+			transform: scale(0.9);
+			transition: 0.035s;
+			--webkit-transition: 0.035s;
+		}
+
+        #counter {
+            position: absolute;
+            left: 50%;
+            width: 100%;
+            text-align: center;
+            transform: translateX(-50%);
+            margin-top: 70pt;
+            font-size: min(10vw, calc(100% * 4.5));
+        }
+    </style>
+    <link rel="stylesheet" href="../../global.css" />
+</head>
+<body>
+    <p id="counter">0</p>
+    <div id="aligner">
+        <img id="axolotlclicker" src="assets/axolotl_cyan.png" draggable="false" />
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>

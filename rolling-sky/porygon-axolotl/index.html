@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="pagename" content="How to make Rolling Sky edits">
+		<meta name="description" content="A simple and easy to follow guide on how to make levels in Rolling Sky">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="../../global.js"></script>
+		<script src="../global.js"></script>
+		<link rel="icon" type="image/x-icon" href="../../../assets/favicon.png">
+		<link rel="stylesheet" href="../global.css">
+		<title>Full RSPC Editing Guide</title>
+		<style>
+		@font-face {
+			font-family: 'regular';
+			src: url("../../fonts/sen/regular.ttf");
+		}
+		* {
+			font-family:regular !important;
+			scroll-behavior:smooth;
+			scroll-margin-top:30pt;
+			color-scheme: dark;
+			/*font-size: 12pt;*/
+		}
+		a {
+			color: #63b4ff;
+		}
+		iframe {
+			max-width: 100%;
+			border: none;
+			border-radius: 10pt;
+		}
+		h1 {
+			font-size: 2em;
+			text-align: center;
+		}
+		h2 {
+			font-size: 1.5em;
+			margin-top: 35pt;
+		}
+		h3 {
+			font-size: 1.17em;
+		}
+		.mini {
+			font-size: 10pt;
+		}
+		.codebox {
+			font-weight: normal;
+			line-height: 100%;
+			background: #2b2b2b;
+			padding: 10pt;
+			border-radius: 10pt;
+			white-space: pre;
+			overflow-x: auto;
+			font-family: monospace !important;
+			width: min-content;
+			max-width: 100%;
+			font-size: 12pt;
+		}
+		hr {
+			display: block;
+			unicode-bidi: isolate;
+			margin-block-start: 0.5em;
+			margin-block-end: 0.5em;
+			margin-inline-start: auto;
+			margin-inline-end: auto;
+			overflow: hidden;
+			/* border-style: solid; */
+			border-width: 0px;
+			height: 2px;
+			background-color: #404145;
+		}
+		.btt {
+			background-color: #f2bd58;
+			box-shadow: 0px 7px 0px 0px #c38b3a;
+			-webkit-box-shadow: 0px 7px 0px 0px #c38b3a;
+			-moz-box-shadow: 0px 7px 0px 0px #c38b3a;
+			border-radius: 10pt; border: none;
+			font-size: 12pt; padding: 6pt 15pt;
+			position: fixed;
+			right: 0;
+			bottom: 2px;
+			margin: 15pt;
+			z-index: 500;
+			transition: 0.15s;
+			color: black;
+			text-decoration: none;
+		}
+		.btt:active {
+			background-color: #f2bd58;
+			box-shadow: 0px 5px 0px 0px #c38b3a;
+			-webkit-box-shadow: 0px 5px 0px 0px #c38b3a;
+			-moz-box-shadow: 0px 5px 0px 0px #c38b3a;
+			right: 0;
+			bottom: 0;
+			transition: 0.15s;
+		}
+		c-warn {
+			color: #ff5a5a;
+			font-weight: 900;
+			text-decoration: underline;
+		}
+		#credit {
+			opacity: 0.5;
+			margin-top: 20pt;
+		}
+		.halfopacity {
+			opacity: 0.5;
+		}
+		</style>
+		<script>
+			function openInstructionalManual() {
+				var url = 'https://sqdldev.github.io/rolling-sky/level-editor/instructional-manual/';
+				var instructionalmanual = window.open(url, '', 'width=760, height=850');
+				if(!instructionalmanual || instructionalmanual.closed || typeof instructionalmanual.closed=='undefined') {
+					var inp = document.createElement('a');
+					inp.href = url;
+					inp.click();
+				}
+			}
+		</script>
+	</head>
+	<body style="padding: 10pt 30pt;">
+		<a href="#" class="btt">Back to Top</a>
+		<h1>Full RSPC Editing Guide</h1>
+		<h2>Sections:</h2>
+		<hr>
+		<div>
+			<p><a target="_self" href="#IDs"><span>I: Understanding Tile IDs</span></a></p>
+			<p><a target="_self" href="#geobuffers"><span>II: Understanding geobuffers</span></a></p>
+			<p><a target="_self" href="#routes"><span>III: Custom routes</span></a></p>
+			<p><a target="_self" href="#themes1"><span>IV: Custom themes (I)</span></a></p>
+			<p><a target="_self" href="#themes2"><span>V: Custom themes (II)</span></a></p>
+			<p><a target="_self" href="#music"><span>VI: Custom music</span></a></p>
+			<p><a target="_self" href="#worlddata"><span>VII: Editing WorldData (level speed and where the level ends)</span></a></p>
+			<p><a target="_self" href="#end"><span>VIII: Custom end</span></a></p>
+			<p><a target="_self" href="#midground"><span>IX: Changing midgrounds</span></a></p>
+			<p><a target="_self" href="#colorsets"><span>X: Changing theme colors and ui colors</span></a></p>
+			<p><a target="_self" href="#configureenemy"><span>XI: Dependent Objects</span></a></p>
+		</div>
+		<h2>Requirements:</h2>
+		<hr>
+		<div>
+			<p><a target="_blank" href="https://steamunlocked.net/rollingsky-free-download/"><span>Rolling Sky (SteamUnlocked)</span></a></p>
+			<p><a target="_blank" href="https://notepad-plus-plus.org/"><span>Notepad++</span></a></p>
+			<p><a target="_blank" href="https://github.com/SeriousCache/UABE/releases/"><span>UABE</span></a></p>
+			<p><a target="_blank" href="https://github.com/dnSpy/dnSpy/releases/"><span>dnSpy</span></a></p>
+			<p><a target="_blank" href="https://unity3d.com/get-unity/download/archive"><span>Unity 2019 or lower</span></a></p>
+			<p><a target="_blank" href="https://www.mapeditor.org/">Tiled</a> (Optional)</p>
+			<p><a target="_blank" href="https://sqdldev.github.io/rolling-sky/tileset/"><span>A tileset for Tiled</span></a> (Optional, Made by sqdldev) [64 x 64]</p>
+		</div>
+
+		<h2 id="IDs">I: Understanding Tile IDs</h2>
+		<hr>
+		<h3>How they work:</h3>
+		Tile IDs are numbers which correspond to an object or obstacle in a level.
+		<p>Example:<br>
+			0 = Empty<br>
+			1 = Ground<br>
+			2 = Jump Pad<br>
+			3 = Glass<br>
+			9 = Crusher<br>
+		</p>
+
+		<p>You can find a list of all tile IDs <a target="_blank" href="../../obstacle-ids/">here</a> or <a target="_blank" href="https://docs.google.com/spreadsheets/d/1a7mPDGtVoXU9s9Bemxu75MpeK22xGXL5nn1u6V38dSE/">here</a>.</p>
+
+		<h3>Level Formation:</h3>
+		<p>
+		A Rolling Sky level is made up
+		by a lot of tile IDs on a text file. 
+		</p>
+
+		<!--<h3>Example:</h3>
+		<iframe src="https://sqdldev.github.io/rolling-sky/all-about-rolling-sky/tryityourself/level_basics.html" style="width: 685pt;height: 500pt;"></iframe>-->
+		
+		<h3>Loader Tiles:</h3>
+		<p>
+		Loader tiles divide a level
+		into segments. Segments should be 7-15 lines long for a level to
+		load. Tiles 181 through 188 are loader tiles.
+		</p>
+
+		<h2 id="geobuffers">II: Understanding geobuffers</h2>
+		<hr>
+
+		<h3>What are they?:</h3>
+		<p>Geobuffers are the way Rolling Sky knows how to render models and other effects. Geobuffers include how many and what type of object to render.</p>
+
+		<h3>Example:</h3>
+		<p>17,4,z = Riser<br>
+		18,4,z = Floater<br></p>
+
+		<h3>How they work:</h3>
+		<p>Geobuffers work in a x,y,z format:<br>
+		<p>x = The object ID<br>
+		y = The type of geobuffer<br>
+		z = The maximum amount of the object in a segment</p></p>
+
+		<a target="_blank" href="../../geobuffer-ids/">Here</a>, you can find a list of all geobuffers.</p>
+		<i>Note: Most geobuffers use GeoBuffer type 4 (Enemy) but other GeoTypes can also be used.</i>
+
+		<p>You can check your GeoBuffer type here:</p>
+		<iframe src="../../buffer-inspector/" style="width: 685pt; height: 335pt;"></iframe>
+
+		<p>And you can find the the GeoBuffer of a tile <a target="_blank" href="../../tile-lookup/">here</a>.</p>
+		<!--<div style="width: 685pt; height: 335pt;"><button onclick="this.parentElement.innerHTML='<iframe src=&#34;https://sqdldev.github.io/rolling-sky/tile-lookup/&#34; style=&#34;width: 685pt; height: 335pt;&#34;></iframe>';">Load Tool</button></div>-->
+
+		<h3>How to edit GeoBuffers:</h3>
+		<ol>
+			<li>Open UABE</li>
+			<li>Select file &gt; open</li>
+			<li>Go to your Rolling Sky installation folder &gt; Rolling Sky_Data</li>
+			<li>Select the resources.assets file and open it</li>
+			<li>Go to view &gt; search by name</li>
+			<li>Search the following “geoBufferX” (With X being replaced with the <a target="_blank" href="../../level-names/">level ID you want</a>)</li>
+			<li>Select plugins &gt; export to .txt</li>
+			<li>Save the GeoBuffer file somewhere you can remember (Like your Desktop)</li>
+			<li>Open Notepad++ (Don't close UABE)</li>
+			<li>Edit the GeoBuffer and save it (Use CTRL+S to save)</li>
+			<li>Go back to UABE and select plugin &gt; import from .txt</li>
+			<li>Select the edited geobuffer</li>
+			<li>Save the resources.assets by clicking file &gt; save</li>
+		</ol>
+		Note: UABE won't allow you to save the resources.assets in the original file location while its open. You must save it elsewhere and close UABE.</p>
+		<p>After closing UABE, you can move the resources.assets back from Rolling Sky installation &gt; Rolling Sky_DATA</p>
+
+		<p><c-warn>Warning:</c-warn> <b>DO NOT EDIT THE FOLLOWING GEOBUFFERS IN geoBuffer0.txt.</b><br><i class="halfopacity">(Unless you know what you are doing, which most people don't, but in case you mess up geoBuffer0.txt, below is the exact copy of geoBuffer0)</i><p>GeoBuffer0 is the global GeoBuffer file, which means it gets used in every single level. No level-specific GeoBuffer files can contain duplicates of the GeoBuffers in geoBuffer0.txt.</p></p>
+		<p class="codebox">0,0,100<br>1,0,20<br>2,0,15<br>3,0,15<br>4,0,5<br>5,0,10<br>6,0,80<br>7,0,15<br>8,0,10<br>9,0,15<br>10,0,45<br>11,0,30<br>12,0,90<br>13,0,70<br>14,0,120<br>30,4,10<br>44,4,20<br>62,4,5<br>64,4,10<br>70,2,10<br>71,2,2<br>72,2,10<br>73,2,15<br>77,5,40<br>78,5,50<br>80,9,60<br>81,9,60<br>82,9,45<br>83,9,45<br>84,9,20<br>85,9,20<br>86,9,60<br>87,9,40<br>88,9,10<br>89,9,40<br>90,9,40<br>91,9,40<br>92,9,40<br>93,9,40<br>94,9,40<br>95,9,40<br>96,9,40<br>97,9,40<br>98,9,40<br>99,9,40<br>100,9,40<br>101,8,650<br>103,10,1<br>104,10,2<br>105,6,1<br>107,10,1<br>108,6,1<br>109,6,1<br>112,1,60<br>114,10,50<br>217,6,10<br>218,6,3<br>233,9,40<br>364,10,1<br>834,6,20</p>
+
+		<h2 id="routes">III: Custom routes</h2>
+		<hr>
+
+		<h3>How to Import a Route</h3>
+		<ol>
+			<li>Open UABE</li>
+			<li>Select file &gt; open</li>
+			<li>Go to your Rolling Sky installation folder &gt; Rolling Sky_Data</li>
+			<li>Select the resources.assets file and open it</li>
+			<li>Go to view &gt; search by name</li>
+			<li>Search the following “LevelX” (With X being replaced with the <a target="_blank" href="../../level-names/">level ID you want</a>)</li>
+			<li>Select plugins &gt; export to .txt</li>
+			<li>Save the level file somewhere you can remember (Like your Desktop)</li>
+			<li>Open Notepad++ (Don't close UABE)</li>
+			<li>Edit the level and save it (Use CTRL+S to save)</li>
+			<li>Go back to UABE and select plugin &gt; import from .txt</li>
+			<li>Select the edited level</li>
+			<li>Save the resources.assets by clicking file &gt; save</li>
+		</ol>
+		<p>Note: Remember that you have to add loader tiles every 7-15 lines</p>
+		<p>UABE won't allow you to save the resources.assets in the original file location while its open. You must save it elsewhere and close UABE.<br>
+		After closing UABE, you can move the resources.assets back from Rolling Sky installation &gt; Rolling Sky_DATA</p>
+
+		<h3>How to edit with Tiled</h3>
+		<ol>
+			<li>Do all the steps above until step 8.</li>
+			<li>Open the file and under [header], look for the height of the level and remember it</li>
+			<li>Go to Tiled and create a new tilemap. The width for the map should be 5 and the height should be the same height as the original level. The tile size depends on what tileset you use</li>
+			<li>Import your tileset to the tilemap</li>
+			<li>Make your route. Once you finish editing save the tilemap</li>
+			<li>Open the tilemap in Notepad++</li>
+			<li>Copy all the numbers from the tilemap to the level file (Only copy the numbers)</li>
+			<li>Save the level file somewhere you can remember (Like your Desktop)</li>
+			<li>Continue with step 11</li>
+		</ol>
+		
+		<h3 id="webeditor_editTutorial">How to edit with WebEditor</h3>
+		<p>Open the <a target="_blank" href="../../level-editor/">level editor</a>. You may want to read the <a onclick="openInstructionalManual();">instructional manual.</a><br>
+		Follow through "How to Import a Route." Pause at Step 10. Choose either Option 1 or Option 2 to create a new level.</p>
+		<ol>
+			<li>Create a new level
+				<ol>
+					<li>On the WebEditor homepage under "Create Blank Level," adjust the level length. You cannot change the level length after creation.</li>
+					<li>After adjusting the level length, click the "Create Blank Level" button</li>
+				</ol>
+			</li>
+			<li>Edit an existing level
+				<ol>
+					<li>On the WebEditor homepage under "Load Existing Level," type the name of the level you want to load. You can use the autocomplete to speed up the process.</li>
+					<li>After confirming the level name, click the "Load Existing Level" button</li>
+				</ol>
+			</li>
+		</ol>
+		<p>After completing one of the options above, continue from Step 10.<br>
+		Load your level into Rolling Sky</p>
+			<ol>
+				<li>After you are finished editing from either method above, navigate to File > Export (Or CTRL+S on Desktop)</li>
+				<li>Under "Download Level," enter the name of the level file. You do not need to include the ".txt" file extension in the input.</li>
+				<li>After confirming the name, click the "Download" button. You can click "Back to Level" to return back to the editor (Or press ESC on Desktop).</li>
+			</ol>
+		<h2 id="themes1">IV: Custom themes (Order of themes)</h2>
+		<hr>
+
+		<h3>How to Locate and Edit themes</h3>
+		<ol>
+			<li>Open dnSpy</li>
+			<li>Select file &gt; open</li>
+			<li>Go to your Rolling Sky installation folder &gt; Rolling Sky_Data &gt; Managed</li>
+			<li>Select the Assembly-CSharp.dll file and open it</li>
+			<li>Select the magnifying glass next to the start button to search</li>
+			<li>Search “LevelDesigner” and double click on the first option</li>
+			<li>Scroll to line 711. In this line you will find the code for all of the theme changes in rs. The code is in order of level IDs. It should look something like this:
+			<p class="codebox">new LevelDesigner.WorldTheme(new LevelDesigner.Theme[5] {<br>&#9;new LevelDesigner.Theme(0, 1, 1f),<br>&#9;new LevelDesigner.Theme(110, 2, 1f),<br>&#9;new LevelDesigner.Theme(212, 3, 1f, true),<br>&#9;new LevelDesigner.Theme(317, 6, 1f, false, false, false, false, false, false),<br>&#9;new LevelDesigner.Theme(420, 1, 1f)<br>}),</p>
+			<p class="mini">(Level 1 "Massif" theme changes)</p></li>
+			<li>Search for the level you want to change the theme. Right click the code and select "Edit Class (C#)" to edit it.<br>
+			Use <a target="_blank" href="../../theme-generator/">this</a> tool to generate the theme section. Make sure that the checkbox labeled "Generate RSU Themes?" is <u>unchecked</u>.</li>
+			<li>After you finish editing click compile</li>
+			<li>Click on file &gt; Save all...</li>
+			<li>Click OK</li>
+		</ol>
+
+		<h2 id="themes2">V: Custom themes (Textures)</h2>
+		<hr>
+
+		<h3>How to Import Custom Textures</h3>
+		<ol>
+			<li>Open UABE</li>
+			<li>Select file &gt; open</li>
+			<li>Go to your Rolling Sky installation folder &gt; Rolling Sky_Data</li>
+			<li>Select the sharedassets0.assets file and open it</li>
+			<li>Go to view &gt; search by name</li>
+			<li>Search the following “textureX” (With X being the id of the texture you want to edit and texture being the texture you want to edit. If you are importing a bg, skip to step 10. <a target="_blank" href="https://docs.google.com/spreadsheets/d/1QgCmHYrANVYz2GVehQY7-G6Al-T3fkcN24aRD3B-r1c/edit?usp=drivesdk">Here is a list of texture names and IDs</a>)</li>
+			<li>Select plugins &gt; export to .png</li>
+			<li>Save the texture file somewhere you can remember (Like your Desktop)</li>
+			<li>Edit the texture with your image editor of choice and save it</li>
+			<li>Go back to UABE and select plugin &gt; edit &gt; load</li>
+			<li>Select the edited texture then ok &gt; ok</li>
+			<li>Save the sharedassets0.assets by clicking file &gt; save</li>
+		</ol>
+		<p>Note: UABE won't allow you to save the resources.assets in the original file location while its open. You must save it elsewgeee and close UABE. After closing UABE, you can move the resources.assets back from Rolling Sky installation &gt; Rolling Sky_DATA</p>
+
+		<h2 id="music">VI: Custom music (Method made by Pão)</h2>
+		<hr>
+
+		<h3>How to Generate a Music Asset</h3>
+		<ol>
+			<li>Create an Unity Project with nothing just the music.</li>
+			<li>Build the project.</li>
+			<li>Use UABE in "sharedassets0.assets"</li>
+			<li>Select the AudioClips and export as Dump.</li>
+			<li>Rename the Dump to the AudioClip name to be replaced. EX: to change massif rename to "Music1.txt".</li>
+			<li>Change the "sharedassets0.resource" fron the unity project to any name. EX: "CustomMusic.resource"</li>
+			<li>Open the dump file and change the "1 string m_Source = "file.resource"" &gt;&gt; file.resource can be another name, change to the custom filename.</li>
+			<li>Paste the custom file "CustomMusic.resource" in Rolling Sky_Data folder.</li>
+			<li>Using UABE open "globalgamemanagers" and select the music to change. EX: "Music1"</li>
+			<li>Select and import the dump file and save the files.</li>
+		</ol>
+
+		<h2 id="worlddata">VII: Editing WorldData (Level Speed and Where the Level Ends)</h2>
+		<hr>
+
+		<h3>How to Find and Edit WorldData</h3>
+		<ol>
+			<li>Open dnSpy</li>
+			<li>Select file &gt; open</li>
+			<li>Go to your Rolling Sky installation folder &gt; Rolling Sky_Data &gt; Managed</li>
+			<li>Select the Assembly-CSharp.dll file and open it</li>
+			<li>Select the magnifying glass next to the start button to search</li>
+			<li>Search “LevelDesigner” and double click on the first option</li>
+			<li>Scroll to line 650. In this line you will find the code for all of the theme changes in rs. The code is in order of level IDs. It should look something like this:
+			<p class="codebox">private static LevelDesigner.WorldData[] worldData = new LevelDesigner.WorldData[] {<br>&#9;new LevelDesigner.WorldData("1", new int?(500), 0.525f, 0.525f, 1f, 6f),<br>&#9;new LevelDesigner.WorldData("2", new int?(650), 0.625f, 0.625f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("3", new int?(805), 0.725f, 0.8f, 1f, 5f),<br>&#9;new LevelDesigner.WorldData("4", new int?(970), 0.8f, 1f, 1f, 6f),<br>&#9;new LevelDesigner.WorldData("5", new int?(1170), 0.85f, 1f, 0.5f, 6f),<br>&#9;new LevelDesigner.WorldData("6", new int?(1095), 0.85f, 0.9f, 0.9f, 6f),<br>&#9;new LevelDesigner.WorldData("7", new int?(1150), 0.85f, 0.9f, 0.9f, 6f),<br>&#9;new LevelDesigner.WorldData("8", new int?(914), 0.895f, 0.9f, 0.85f, 6f),<br>&#9;new LevelDesigner.WorldData("9", new int?(1760), 0.902f, 0.902f, 0.902f, 6f),<br>&#9;new LevelDesigner.WorldData("10", new int?(1112), 0.8f, 0.9f, 1f, 6f),<br>&#9;new LevelDesigner.WorldData("11", new int?(1136), 0.85f, 1f, 1f, 6f),<br>&#9;new LevelDesigner.WorldData("12", new int?(1100), 0.8f, 0.9f, 1f, 6f),<br>&#9;new LevelDesigner.WorldData("13", new int?(650), 0.625f, 0.625f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("14", new int?(1043), 0.85f, 0.85f, 1f, 6f),<br>&#9;new LevelDesigner.WorldData("15", new int?(1042), 0.875f, 0.875f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("16", new int?(1035), 0.725f, 0.8f, 1f, 5f),<br>&#9;new LevelDesigner.WorldData("17", new int?(1079), 0.875f, 0.875f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("18", new int?(780), 0.65f, 0.65f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("19", new int?(1022), 0.85f, 1f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("20", new int?(946), 0.7f, 0.75f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("21", new int?(1188), 0.85f, 0.875f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("22", new int?(1070), 0.725f, 0.8f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("23", new int?(1150), 0.85f, 0.9f, 0.9f, 6f),<br>&#9;new LevelDesigner.WorldData("24", new int?(1040), 0.725f, 0.8f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("25", new int?(1150), 0.85f, 0.85f, 0.85f, 6f),<br>&#9;new LevelDesigner.WorldData("26", new int?(1150), 0.85f, 0.85f, 0.85f, 6f),<br>&#9;new LevelDesigner.WorldData("27", new int?(1130), 0.8f, 0.8f, 0.85f, 6f),<br>&#9;new LevelDesigner.WorldData("28", new int?(1142), 0.87f, 1f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("29", new int?(1050), 0.725f, 0.8f, 0.85f, 6f),<br>&#9;new LevelDesigner.WorldData("30", new int?(1142), 0.87f, 1f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("31", new int?(1043), 0.725f, 0.725f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("32", new int?(1105), 0.85f, 0.9f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("33", new int?(712), 0.6f, 0.7f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("34", new int?(1130), 0.85f, 0.9f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("35", new int?(728), 0.625f, 0.7f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("36", new int?(456), 0.45f, 0.625f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("37", new int?(1118), 0.87f, 0.9f, 0.9f, 6f),<br>&#9;new LevelDesigner.WorldData("38", new int?(944), 0.625f, 0.625f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("39", new int?(764), 0.725f, 0.8f, 0.9f, 6f),<br>&#9;new LevelDesigner.WorldData("40", new int?(1100), 0.8f, 1f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("41", new int?(845), 0.525f, 0.7f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("42", new int?(1180), 0.87f, 0.9f, 0.9f, 6f),<br>&#9;new LevelDesigner.WorldData("43", new int?(485), 0.625f, 0.625f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("44", new int?(1154), 0.87f, 0.9f, 0.9f, 6f),<br>&#9;new LevelDesigner.WorldData("45", new int?(511), 0.725f, 0.8f, 0.9f, 6f),<br>&#9;new LevelDesigner.WorldData("46", new int?(1355), 0.725f, 0.8f, 0.9f, 6f),<br>&#9;new LevelDesigner.WorldData("47", new int?(1145), 0.725f, 0.8f, 0.9f, 6f),<br>&#9;new LevelDesigner.WorldData("48", new int?(1660), 0.6f, 0.7f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("49", new int?(1021), 0.6f, 0.7f, 1f, 7f),<br>&#9;new LevelDesigner.WorldData("50", new int?(1108), 0.9f, 1.1f, 1f, 7f)<br>};</p>
+			</li>
+			<li>Edit the nullable int [int?(#)] and float [#f] values:
+				<ul>
+					<li>The nullable int value is the line where the level ends.</li>
+					<li>The first float value is the start speed.</li>
+					<li>The second float is the maximum speed.</li>
+					<li>The third float is at what percent the level reaches max speed (Divide the level percentage by 100 to get this value).</li>
+					<li>The fourth float is how many lines there are after the finish line.</li>
+				</ul>
+				Remember that float values can use the decimal place and int? can't.
+			</li>
+			<li>After you finish editing click compile</li>
+			<li>Click on file &gt; Save all...</li>
+			<li>Click OK</li>
+		</ol>
+
+		<h2 id="end">VIII: Custom end</h2>
+		<hr>
+
+		<ol>
+			<li>Open UABE</li>
+			<li>Select file &gt; open</li>
+			<li>Go to your Rolling Sky installation folder &gt; Rolling Sky_Data</li>
+			<li>Select the resources.assets file and open it</li>
+			<li>Go to view &gt; search by name</li>
+			<li>Search the following: “endX” (X being the level id of the end of a level you want to edit. <a target="_blank" href="../../level-names/">Here is a list of level IDs</a>)</li>
+			<li>Select plugins &gt; export to .txt</li>
+			<li>Save the end level file somewhere you can remember (Like your Desktop)</li>
+			<li>Open Notepad++ (Don't close UABE)</li>
+			<li>Edit the end and save it</li>
+			<li>Go back to UABE and select plugin &gt; import from .txt</li>
+			<li>Select the edited end</li>
+			<li>Save the resources.assets by clicking file &gt; save</li>
+		</ol>
+		<p>Note: UABE won't allow you to save the resources.assets in the original file location while its open. You must save it elsewhere and close UABE.<br>
+		After closing UABE, you can move the resources.assets back from Rolling Sky installation &gt; Rolling Sky_DATA</p>
+
+		<h2 id="midground">IX: Changing midgrounds</h2>
+		<hr>
+
+		<h3>How to Change Midgrounds</h3>
+		<ol>
+			<li>Open dnSpy</li>
+			<li>Select file &gt; open</li>
+			<li>Go to your Rolling Sky installation folder &gt; Rolling Sky_Data &gt; Managed</li>
+			<li>Select the Assembly-CSharp.dll file and open it</li>
+			<li>Select the magnifying glass next to the start button to search</li>
+			<li>Search “MidgroundManager” and double click on the first option</li>
+			<li>Scroll to line 190. In this line you will find the code for all of the themes midground configuration in rs. The code is in order of theme IDs (<a target="_blank" href="<!--../../assets/|{–365/All_Theme_IDs_For_Edit.docx-->">Theme ID list</a>). It should look something like this:</li>
+			<p class="codebox">private static MidgroundManager.BlockData[] blockData = new MidgroundManager.BlockData[] {<br>&#9;new MidgroundManager.BlockData(5f, 15f, 0f, 12f, 4, new PrefabName[]<br>&#9;{<br>&#9;&#9;PrefabName.Block1<br>&#9;}),</p>
+			<p class="mini">(Theme 1 "Massif" midground configuration)</p>
+			<li>Search for the theme you want to change the midground. Right click the code and select "Edit Class (C#)" to edit it.<br>
+			The row of numbers on top is the location and amount of the midground (Hover your mouse over BlockData to know which float does what).<br>
+			To change the model you have to change whats after the PrefabName. (A list of midgrounds has not been created so there will be no list. You will have to find out which model is which yourself) (Some midgrounds use more than one model. You can also add or remove them as you wish)</li>
+			<li>After you finish editing click compile</li>
+			<li>Click on file &gt; Save all...</li>
+			<li>Click OK</li>
+		</ol>
+
+		<h2 id="colorsets">X: Changing theme colors and ui colors</h2>
+		<hr>
+
+		<ol>
+			<li>Open dnSpy</li>
+			<li>Select file &gt; open</li>
+			<li>Go to your Rolling Sky installation folder &gt; Rolling Sky_Data &gt; Managed</li>
+			<li>Select the Assembly-CSharp.dll file and open it</li>
+			<li>Select the magnifying glass next to the start button to search</li>
+			<li>Search “MaterialManager” and double click on the first option</li>
+			<li>Scroll to line 1380. In this line you will find the code for all of the themes color configuration in rs. The code is in order of theme IDs (<a target="_blank" href="../../assets/|{–365/All_Theme_IDs_For_Edit.docx">Theme ID list</a>). It should look something like this:</li>
+			<p class="codebox">private static ColorSet[] colorSets = new ColorSet[] {<br>&#9;new ColorSet(249, 183, 79, 250, 129, 48, 248, 183, 79, 248, 183, 79, 117, 207, 220, 117, 207, 220, 0, 124, 128, 206, 173, 79, 202, 253, 255, 0, 0, 0, 0.25f, 255, 255, 255, 90, 255, 255, 55, 200, 255, 255, 47, 4, 255, 47, 4, 255, 255, 255, 255, 128, 0, 255, 0, 128, 255, 64, 64, 255, 0, 0, 139, 30, 0, 255, 255, 255, 107, 65, 65, 0, 0, 0, 231, 124, 114, 255, 255, 255, 0.3f, 0.1f, 5, 25),</p>
+			<p class="mini">(Theme 1 "Massif" color configuration)</p>
+			<li>Search for the theme you want to change the color configuration. Right click the code and select "Edit Class (C#)" to edit it. Use <a target="_blank" href="https://sqdldev.github.io/rolling-sky/colorsets/">this</a> as a reference</li>
+			<li>After you finish editing click compile</li>
+			<li>Click on file &gt; Save all...</li>
+			<li>Click OK</li>
+		</ol>
+
+		<h2 id="configureenemy">XI: Dependent Objects</h2>
+		<hr>
+
+		<h3>What are they?</h3>
+		<p>Dependent objects are objects that vary depending on the current theme. Dependent objects don't have a specific theme ID. They use another already existing object's ID</p>
+		<h3>Example:</h3>
+		<p>Halloween pillar laser<br>
+		lvl9 pillars</p>
+
+		<h3>How to edit them:</h3>
+		<ol>
+			<li>Open dnSpy</li>
+			<li>Select file &gt; open</li>
+			<li>Go to your Rolling Sky installation folder &gt; Rolling Sky_Data &gt; Managed</li>
+			<li>Select the Assembly-CSharp.dll file and open it</li>
+			<li>Select the magnifying glass next to the start button to search</li>
+			<li>Search “ConfigureEnemy” and double click on the first option</li>
+			<li>Search for the dependent object you want to edit. Right click the code and select "Edit Class (C#)" to edit it.<br>
+			It is reccomended that you know a bit of C# before starting to edit.<br>
+			All dependent objects have different code, although most include a line of code (LevelDesigner.CurrentWorldThemeNumber == #) that specifies what theme uses that dependent object.<br>
+			<a target="_blank" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/boolean-logical-operators?redirectedfrom=MSDN#conditional-logical-or-operator-">To have multiple themes use the same object, add "||"</a>.<br>Ex: (LevelDesigner.CurrentWorldThemeNumber == 1 || LevelDesigner.CurrentWorldThemeNumber == 27)<br>
+			<b>Remember to remove conflicting dependent objects before adding a new dependent object.</b></li>
+			<li>After you finish editing click compile</li>
+			<li>Click on file &gt; Save all...</li>
+			<li>Click OK</li>
+		</ol>
+		
+		<hr style="margin-top: 20pt;">
+		<p id="credit">(Site founded by Porygon Axolotl, formatted and maintained by <a target="_blank" href="https://www.youtube.com/channel/UCtRHiongiDb63nAL9KU6BtA">sqdl_</a>)</p>
+	</body>
+</html>
